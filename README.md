@@ -13,7 +13,7 @@ Works great for long-running tasks when you're away from the terminal.
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cc-notifications.git
+git clone https://github.com/1stprinciples/cc-notifications.git
 cd cc-notifications
 ./install.sh
 ```
