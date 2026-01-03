@@ -18,7 +18,9 @@ cd cc-notifications
 ./install.sh
 ```
 
-This adds a `Stop` hook to your Claude Code settings (`~/.claude/settings.json`).
+This adds hooks to your Claude Code settings (`~/.claude/settings.json`):
+- **Stop**: when Claude finishes responding
+- **Notification**: when Claude asks questions or needs input
 
 ## Custom Sound
 
@@ -59,6 +61,17 @@ If you already have hooks configured, add this to your `~/.claude/settings.json`
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /path/to/cc-notifications/src/notify.js"
+          }
+        ]
+      }
     ]
   }
 }
@@ -66,7 +79,7 @@ If you already have hooks configured, add this to your `~/.claude/settings.json`
 
 ## Uninstall
 
-Remove the `Stop` hook from `~/.claude/settings.json`.
+Remove the `Stop` and `Notification` hooks from `~/.claude/settings.json`.
 
 ## License
 

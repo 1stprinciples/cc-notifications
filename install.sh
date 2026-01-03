@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # cc-notifications installer
-# Adds the Stop hook to Claude Code settings
+# Adds notification hooks to Claude Code settings
 
 set -e
 
@@ -19,12 +19,13 @@ mkdir -p "$HOME/.config/cc-notifications"
 
 # Check if settings.json exists
 if [ -f "$SETTINGS_FILE" ]; then
-    # Check if hooks.Stop already exists
-    if grep -q '"Stop"' "$SETTINGS_FILE" 2>/dev/null; then
+    # Check if our hooks already exist
+    if grep -q '"Stop"' "$SETTINGS_FILE" 2>/dev/null || grep -q '"Notification"' "$SETTINGS_FILE" 2>/dev/null; then
         echo ""
-        echo "Warning: Stop hook already exists in $SETTINGS_FILE"
-        echo "Please manually add the notification hook to your existing Stop hooks:"
+        echo "Warning: Hooks already exist in $SETTINGS_FILE"
+        echo "Please manually add the notification hooks if needed:"
         echo ""
+        echo "Add to both Stop and Notification events:"
         echo '  {
     "type": "command",
     "command": "node '"$NOTIFY_SCRIPT"'"
@@ -38,15 +39,23 @@ if [ -f "$SETTINGS_FILE" ]; then
 const fs = require('fs');
 const settings = JSON.parse(fs.readFileSync('$SETTINGS_FILE', 'utf8'));
 settings.hooks = settings.hooks || {};
-settings.hooks.Stop = [{
+
+const hook = {
   hooks: [{
     type: 'command',
     command: 'node $NOTIFY_SCRIPT'
   }]
-}];
+};
+
+// Stop: when Claude finishes responding
+settings.hooks.Stop = [hook];
+
+// Notification: when Claude needs user input (questions, permission prompts)
+settings.hooks.Notification = [{ matcher: '*', ...hook }];
+
 fs.writeFileSync('$SETTINGS_FILE', JSON.stringify(settings, null, 2));
 "
-    echo "Updated $SETTINGS_FILE with Stop hook"
+    echo "Updated $SETTINGS_FILE with notification hooks"
 else
     # Create new settings.json
     cat > "$SETTINGS_FILE" << EOF
@@ -61,15 +70,30 @@ else
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $NOTIFY_SCRIPT"
+          }
+        ]
+      }
     ]
   }
 }
 EOF
-    echo "Created $SETTINGS_FILE with Stop hook"
+    echo "Created $SETTINGS_FILE with notification hooks"
 fi
 
 echo ""
 echo "Installation complete!"
+echo ""
+echo "Hooks installed:"
+echo "  - Stop: plays sound when Claude finishes"
+echo "  - Notification: plays sound when Claude asks questions"
 echo ""
 echo "To customize the notification sound, create:"
 echo "  ~/.config/cc-notifications/config.json"
