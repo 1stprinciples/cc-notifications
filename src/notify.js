@@ -43,12 +43,13 @@ function playSound(soundPath) {
 }
 
 function main() {
-  // Only play sound if user is away from terminal
-  if (isTerminalFocused()) {
+  const config = getConfig();
+
+  // Only play sound if user is away from terminal (unless alwaysPlay is set)
+  if (!config.alwaysPlay && isTerminalFocused()) {
     return;
   }
 
-  const config = getConfig();
   const soundPath = config.sound || DEFAULT_SOUND;
 
   // Verify file exists

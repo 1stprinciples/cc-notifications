@@ -22,17 +22,21 @@ This adds hooks to your Claude Code settings (`~/.claude/settings.json`):
 - **Stop**: when Claude finishes responding
 - **Notification**: when Claude asks questions or needs input
 
-## Custom Sound
+## Configuration
 
 Create `~/.config/cc-notifications/config.json`:
 
 ```json
 {
-  "sound": "/path/to/your/sound.mp3"
+  "sound": "/path/to/your/sound.mp3",
+  "alwaysPlay": true
 }
 ```
 
-Supports `.mp3`, `.wav`, `.aiff`, `.m4a`.
+| Option | Description |
+|--------|-------------|
+| `sound` | Path to custom sound file (`.mp3`, `.wav`, `.aiff`, `.m4a`) |
+| `alwaysPlay` | Always play sound, even when terminal is focused |
 
 ## Default Sound
 
