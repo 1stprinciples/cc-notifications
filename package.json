@@ -1,0 +1,12 @@
+{
+  "name": "cc-notifications",
+  "version": "1.0.0",
+  "description": "Notification sounds for Claude Code",
+  "main": "src/notify.js",
+  "scripts": {
+    "notify": "node src/notify.js",
+    "install-hook": "bash install.sh"
+  },
+  "keywords": ["claude-code", "notifications", "hooks"],
+  "license": "MIT"
+}
