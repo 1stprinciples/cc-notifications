@@ -2,7 +2,7 @@
 
 Notification sounds for [Claude Code](https://claude.ai/code). Plays a pleasant sound when Claude finishes responding.
 
-Works great for long-running tasks when you're away from the terminal.
+**Only notifies when you're away** - no sound if your terminal is focused. Works great for long-running tasks when you're multitasking.
 
 ## Requirements
 
